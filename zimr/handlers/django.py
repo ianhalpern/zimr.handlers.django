@@ -16,6 +16,10 @@ def application( environ, start_response ):
 	# django SCRIPT_NAME fix
 	environ['PATH_INFO'] = environ['SCRIPT_NAME'] + environ['PATH_INFO']
 	environ['SCRIPT_NAME'] = ''
+	while environ['PATH_INFO'].find('//') != -1:
+		environ['PATH_INFO'] = environ['PATH_INFO'].replace('//','/')
+	#if environ['PATH_INFO'] and environ['PATH_INFO'][0] == '/':
+	#	environ['PATH_INFO'] = environ['PATH_INFO'][1:]
 	return _application( environ, start_response )
 
 connection_handler = partial( zimr.handlers.wsgi.connection_handler, application )
